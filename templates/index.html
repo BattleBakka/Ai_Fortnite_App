@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortnite Cosmetic Generator</title>
+    <!-- Adding Google Font for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4e73df;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4e73df;
+            outline: none;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #4e73df;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2e5cb8;
+        }
+
+        #image-container {
+            display: none;
+            margin-top: 30px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fortnite Cosmetic Generator</h1>
+
+        <!-- Form to input a description for the cosmetic -->
+        <input type="text" id="prompt" placeholder="Enter description for cosmetic..." required>
+        <button onclick="generateCosmetic()">Generate Cosmetic</button>
+
+        <!-- Display the generated image if available -->
+        <div id="image-container">
+            <h2>Generated Cosmetic:</h2>
+            <img id="generated-image" src="" alt="Generated Fortnite Cosmetic" />
+            <br>
+            <a id="download-link" href="" download="generated_cosmetic.png">Download Image</a>
+        </div>
+    </div>
+
+    <!-- JavaScript to handle generating the cosmetic -->
+    <script>
+        async function generateCosmetic() {
+            const prompt = document.getElementById("prompt").value;  // Get prompt from the input field
+            const response = await fetch('/generate_cosmetic', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt: prompt }),  // Send the prompt to the backend
+            });
+            const data = await response.json();
+            if (data.image_url) {
+                document.getElementById("generated-image").src = data.image_url;
+                document.getElementById("download-link").href = data.image_url;
+                document.getElementById("image-container").style.display = "block";  // Show the image container
+            } else {
+                alert("Error generating image: " + data.error);
+            }
+        }
+    </script>
+</body>
+</html>
