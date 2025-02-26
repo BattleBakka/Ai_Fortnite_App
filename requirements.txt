@@ -2,3 +2,4 @@ flask==1.1.2
 openai==0.28
 gunicorn==20.1.0
 werkzeug==1.0.1
+jinja2==2.11.3
